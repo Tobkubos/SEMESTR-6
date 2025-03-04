@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE artykul SYSTEM "zad6.dtd">
+
+
+<artykul>
+    <autor>
+        <imie>Grzegorz</imie>
+        <nazwisko>Pełechaty</nazwisko>
+    </autor>
+    <tytul strona="http://www.abc.com/paper1">Jądro Systemu Operacyjnego</tytul>
+    <seria strona="http://www.abc.com/os.html">Systemy operacyjne</seria>
+    <data-publikacji>2006-06-18</data-publikacji>
+    <opis>pokazuje jak napisać własny system
+        operacyjny. Omawia zarządzanie pamięcią oraz przerwania w czasie
+        rzeczywistym. Porusza również podstawowe zagadnienia tryby chronionego.
+        </opis>
+</artykul>

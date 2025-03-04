@@ -1,0 +1,12 @@
+<!ELEMENT artykul (autor|tytul|seria|data-publikacji|opis)*>
+        <!ELEMENT autor (imie|nazwisko)*>
+        <!ELEMENT imie (#PCDATA)>
+        <!ELEMENT nazwisko (#PCDATA)>
+        <!ELEMENT tytul (#PCDATA)>
+        <!ATTLIST tytul
+                strona CDATA #REQUIRED>
+        <!ELEMENT seria (#PCDATA)>
+        <!ATTLIST seria
+                strona CDATA #REQUIRED>
+        <!ELEMENT data-publikacji (#PCDATA)>
+        <!ELEMENT opis (#PCDATA)>

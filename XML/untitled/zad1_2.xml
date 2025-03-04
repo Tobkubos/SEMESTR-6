@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<spis_publikacji>
+    <publikacja tom="4" numer="3">
+        <tytul>Struktura Sieci i adresowanie</tytul>
+        <dzial>Zagadnienia Informatyczne</dzial>
+        <rok>2004</rok>
+        <autorzy>
+            <autor imie="Łukasz" nazwisko="Kowalski"/>
+            <autor imie="Tomasz" nazwisko="Szczepaniak"/>
+        </autorzy>
+    </publikacja>
+
+    <publikacja>
+        <tytul>Matematyka Dyskretna</tytul>
+        <dzial>Matematyka dla Politechnik</dzial>
+        <wydawnictwo>Wydawnictwa Naukowe PWN</wydawnictwo>
+        <rok>2003</rok>
+        <autorzy>
+            <autor imie="Tomasz" nazwisko="Żakowski"/>
+            <autor imie="Witold" nazwisko="Żakowski"/>
+        </autorzy>
+    </publikacja>
+
+    <publikacja>
+        <tytul>Gramatyka Angielska</tytul>
+        <wydawnictwo>Wydawnictwa Szkolne</wydawnictwo>
+        <rok>2006</rok>
+        <autorzy>
+            <autor imie="Bronisława" nazwisko="Jasińska"/>
+            <autor imie="Janina" nazwisko="Nowak"/>
+            <autor imie="Monika" nazwisko="Wojciechowska"/>
+        </autorzy>
+    </publikacja>
+
+    <publikacja tom="95" strona="479">
+        <tytul>Positron Annihiolation in Solid and Liquid Bi40Sn60 Alloy</tytul>
+        <czasopismo>Acta Physica Polonica</czasopismo>
+        <rok>1987</rok>
+        <autorzy>
+            <autor imie="Stanisław" nazwisko="Chabik"/>
+            <autor imie="Wanda" nazwisko="Rudzińska"/>
+            <autor imie="Marek" nazwisko="Szuszkiewicz"/>
+        </autorzy>
+    </publikacja>
+
+</spis_publikacji>
