@@ -57,7 +57,7 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun SingleChoiceSegmentedButton(selectedIndex: Int, onSelectedIndexChange: (Int) -> Unit) {
 
-    val options = listOf("Day", "Month", "Week")
+    val options = listOf("Hour", "Day", "Week")
 
     SingleChoiceSegmentedButtonRow {
         options.forEachIndexed { index, label ->
@@ -80,6 +80,7 @@ fun MainScreen() {
     var num by remember{ mutableStateOf("") }
     var selectedIndex by remember { mutableIntStateOf(0) }
     var selectedDate by remember { mutableStateOf<Long?>(null) }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -139,13 +140,29 @@ fun Input1(num: String, onNumChange: (String) -> Unit) {
 @Composable
 fun TimeTravelButton(num: String, selectedIndex: Int, selectedDate: Long?) {
     FilledTonalButton(onClick = {
-        val dateString = selectedDate?.let { convertMillisToDate(it) } ?: "No date selected"
+        val convertedNum = num.toLongOrNull()
 
-        println("Button clicked!    $num    $selectedIndex   $selectedDate     $dateString")
+        val newDateString = if (selectedDate != null && convertedNum != null) {
+            var newDateMillis: Long = 0
+            if(selectedIndex == 0){
+                newDateMillis = selectedDate + (convertedNum * 60 * 60 * 1000L)
+            }
+            if(selectedIndex == 1){
+                newDateMillis = selectedDate + (convertedNum * 24 * 60 * 60 * 1000L)
+            }
+            if(selectedIndex == 2){
+                newDateMillis = selectedDate + (convertedNum * 7 * 24 * 60 * 60 * 1000L)
+            }
+            convertMillisToDate(newDateMillis)
+        } else {
+            "Invalid date or number"
+        }
+        println("Button clicked!    $num ms    $selectedIndex   $selectedDate  ->  $newDateString")
     }) {
         Text("Time Travel!")
     }
 }
+
 
 @Composable
 fun Label1(name: String) {
