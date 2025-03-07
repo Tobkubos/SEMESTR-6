@@ -32,6 +32,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -41,7 +42,6 @@ import androidx.compose.ui.text.input.KeyboardType
 
 import androidx.compose.material3.SegmentedButton
 import androidx.compose.ui.text.font.FontWeight
-
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -54,12 +54,81 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+fun calculateDate(num: String, selectedIndex: Int, selectedDate: Long?, selectedDirection: Int, hours: Int?, minutes: Int?, onNewDateStringChange: (String) -> Unit) {
+    val convertedNum = num.toLongOrNull()
+
+    val updatedDateString = if (selectedDate != null && convertedNum != null && hours != null && minutes != null) {
+        val dir = if (selectedDirection == 0) -1 else 1
+        val newDateMillis = when (selectedIndex) {
+            0 -> (selectedDate + (hours * 60 * 60 * 1000L) + (minutes * 60 * 1000L)) + dir * convertedNum * 60 * 60 * 1000L // Godziny
+            1 -> (selectedDate + (hours * 60 * 60 * 1000L) + (minutes * 60 * 1000L)) + dir * convertedNum * 24 * 60 * 60 * 1000L // Dni
+            2 -> (selectedDate + (hours * 60 * 60 * 1000L) + (minutes * 60 * 1000L)) + dir * convertedNum * 7 * 24 * 60 * 60 * 1000L // Tygodnie
+            else -> selectedDate
+        }
+        convertMillisToDate(newDateMillis, 1)
+    } else {
+        "Invalid date or number"
+    }
+    onNewDateStringChange(updatedDateString)
+}
+
+@Composable
+fun MainScreen() {
+
+    var num by remember{ mutableStateOf("") }
+    var selectedIndex by remember { mutableIntStateOf(0) }
+    var selectedDirection by remember { mutableIntStateOf(0) }
+
+    val currentDate = Calendar.getInstance().apply {
+        set(Calendar.HOUR_OF_DAY, 0)   // Ustawiamy godzinę na 0
+        set(Calendar.MINUTE, 0)         // Ustawiamy minutę na 0
+        set(Calendar.SECOND, 0)         // Ustawiamy sekundę na 0
+        set(Calendar.MILLISECOND, 0)    // Ustawiamy milisekundy na 0
+    }
+    val currentDateMillis = currentDate.timeInMillis
+
+    var selectedDate by remember { mutableStateOf<Long?>(currentDateMillis) }
+    var newDateString by remember { mutableStateOf("") }
+    var selectedHour by remember { mutableIntStateOf(12) }
+    var selectedMinute by remember { mutableIntStateOf(0) }
+
+    LaunchedEffect(num, selectedIndex, selectedDate, selectedDirection, selectedHour, selectedMinute) {
+        calculateDate(num, selectedIndex, selectedDate, selectedDirection, hours = selectedHour, minutes = selectedMinute) {
+            newDateString = it
+        }
+    }
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(55.dp), // Odstęp od krawędzi ekranu
+        verticalArrangement = Arrangement.spacedBy(10.dp, Alignment.CenterVertically),
+        horizontalAlignment = Alignment.CenterHorizontally // Wyśrodkowanie w poziomie
+    ) {
+        ThemeLabel("Ultimate Time Traveller")
+        Label1("Step 1. Choose a date")
+        DatePickerDocked(onDateSelected = { selectedDate = it })
+        TimePickerDocked(onTimeSelected = { hour, minute ->
+                                                selectedHour = hour
+                                                selectedMinute = minute})
+        Label1("Step 2. Choose number and type")
+        Input1(num = num, onNumChange = { num = it })
+        SingleChoiceSegmentedButton(selectedIndex = selectedIndex, onSelectedIndexChange = { selectedIndex = it })
+        SingleChoiceSegmentedButton2(selectedIndex = selectedDirection, onSelectedIndexChange = { selectedDirection = it })
+        //TimeTravelButton(num, selectedIndex, selectedDate, selectedDirection, onNewDateStringChange = {newDateString = it})
+        Label3(output = newDateString, num = num, idx = selectedIndex, direction = selectedDirection, selectedHour, selectedMinute)
+
+    }
+}
+
 @Composable
 fun SingleChoiceSegmentedButton(selectedIndex: Int, onSelectedIndexChange: (Int) -> Unit) {
 
     val options = listOf("Hour", "Day", "Week")
 
-    SingleChoiceSegmentedButtonRow {
+    SingleChoiceSegmentedButtonRow (
+        modifier = Modifier.fillMaxWidth() // Rozciąga cały wiersz na szerokość)
+    ){
         options.forEachIndexed { index, label ->
             SegmentedButton(
                 shape = SegmentedButtonDefaults.itemShape(
@@ -75,27 +144,25 @@ fun SingleChoiceSegmentedButton(selectedIndex: Int, onSelectedIndexChange: (Int)
 }
 
 @Composable
-fun MainScreen() {
+fun SingleChoiceSegmentedButton2(selectedIndex: Int, onSelectedIndexChange: (Int) -> Unit) {
 
-    var num by remember{ mutableStateOf("") }
-    var selectedIndex by remember { mutableIntStateOf(0) }
-    var selectedDate by remember { mutableStateOf<Long?>(null) }
+    val options = listOf("Past", "Future")
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(55.dp), // Odstęp od krawędzi ekranu
-        verticalArrangement = Arrangement.spacedBy(10.dp, Alignment.CenterVertically),
-        horizontalAlignment = Alignment.CenterHorizontally // Wyśrodkowanie w poziomie
-    ) {
-        ThemeLabel("Ultimate Time Traveller")
-        Label1("Step 1. Choose a date")
-        DatePickerDocked(onDateSelected = { selectedDate = it })
-        Label1("Step 2. Choose number and type")
-        Input1(num = num, onNumChange = { num = it })
-        SingleChoiceSegmentedButton(selectedIndex = selectedIndex, onSelectedIndexChange = { selectedIndex = it })
-        TimeTravelButton(num, selectedIndex, selectedDate)
-        Label3()
+    SingleChoiceSegmentedButtonRow (
+        modifier = Modifier.fillMaxWidth() // Rozciąga cały wiersz na szerokość)
+    ){
+        options.forEachIndexed { index, label ->
+            SegmentedButton(
+                shape = SegmentedButtonDefaults.itemShape(
+                    index = index,
+                    count = options.size
+                ),
+                onClick = { onSelectedIndexChange(index) },
+                selected = index == selectedIndex,
+                label = { Text(label) }
+
+            )
+        }
     }
 }
 
@@ -116,15 +183,16 @@ fun Input1(num: String, onNumChange: (String) -> Unit) {
         TextField(
             value = num,
             onValueChange = { newNum ->
-                if (newNum.isEmpty() || (newNum.all { it.isDigit() })) {
+                if (newNum.isEmpty() || (newNum.all { it.isDigit() } && newNum.length <= 5)) {
                     onNumChange(newNum)
                 }
                 if(newNum.length == 1 && newNum[0] == '0'){
                     onNumChange("")
                 }
             },
-            label = { Text(text = "number") },
+            label = { Text(text = "value") },
             singleLine = true,
+
             keyboardOptions = KeyboardOptions.Default.copy(
                 keyboardType = KeyboardType.Number
             ),
@@ -134,32 +202,6 @@ fun Input1(num: String, onNumChange: (String) -> Unit) {
                 }
             )
         )
-    }
-}
-
-@Composable
-fun TimeTravelButton(num: String, selectedIndex: Int, selectedDate: Long?) {
-    FilledTonalButton(onClick = {
-        val convertedNum = num.toLongOrNull()
-
-        val newDateString = if (selectedDate != null && convertedNum != null) {
-            var newDateMillis: Long = 0
-            if(selectedIndex == 0){
-                newDateMillis = selectedDate + (convertedNum * 60 * 60 * 1000L)
-            }
-            if(selectedIndex == 1){
-                newDateMillis = selectedDate + (convertedNum * 24 * 60 * 60 * 1000L)
-            }
-            if(selectedIndex == 2){
-                newDateMillis = selectedDate + (convertedNum * 7 * 24 * 60 * 60 * 1000L)
-            }
-            convertMillisToDate(newDateMillis)
-        } else {
-            "Invalid date or number"
-        }
-        println("Button clicked!    $num ms    $selectedIndex   $selectedDate  ->  $newDateString")
-    }) {
-        Text("Time Travel!")
     }
 }
 
@@ -196,17 +238,32 @@ fun ThemeLabel(name: String) {
 }
 
 @Composable
-fun Label3() {
+fun Label3(output: String, num: String, idx: Int, direction: Int, h: Int, m: Int) {
+    val shouldShow = output.isNotEmpty() && num.isNotEmpty()
+
     Column(
         modifier = Modifier
-            .height(100.dp),
-        horizontalAlignment = Alignment.CenterHorizontally, // Wyśrodkowanie w poziomie
+            .height(65.dp),
+        horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Bottom
     ) {
-        Text(
-            text = "[aaaaaaa]",
-            fontSize = 35.sp
-        )
+        if (shouldShow) {
+            val idxText = when (idx) {
+                0 -> "Hours"
+                1 -> "Days"
+                2 -> "Weeks"
+                else -> "Hours"
+            }
+
+            val directionText = if (direction == 0) "Past" else "Future"
+
+            Text(
+                text = "in the $directionText of $num $idxText: $output",
+                fontSize = 20.sp
+            )
+        } else {
+            Spacer(modifier = Modifier.height(24.dp))
+        }
     }
 }
 
@@ -215,18 +272,31 @@ fun Label3() {
 @Composable
 fun DatePickerDocked(onDateSelected: (Long?) -> Unit) {
     var showDatePicker by remember { mutableStateOf(false) }
+
+    val currentDateMillis = Calendar.getInstance().timeInMillis
+
     val datePickerState = rememberDatePickerState(
+        initialSelectedDateMillis = currentDateMillis // Ustawienie domyślnej daty na bieżącą
     )
 
+
+    //ustawienie godziny na 00:00
     val selectedDate = datePickerState.selectedDateMillis?.let {
-        convertMillisToDate(it)
-    } ?: ""
+        val calendar = Calendar.getInstance().apply {
+            timeInMillis = it
+            set(Calendar.HOUR_OF_DAY, 0)     // Ustawienie godziny na 0
+            set(Calendar.MINUTE, 0)          // Ustawienie minut na 0
+            set(Calendar.SECOND, 0)          // Ustawienie sekund na 0
+            set(Calendar.MILLISECOND, 0)     // Ustawienie milisekund na 0
+        }
+        calendar.timeInMillis
+    }
 
     Box(
         modifier = Modifier.fillMaxWidth()
     ) {
         OutlinedTextField(
-            value = selectedDate,
+            value = selectedDate?.let { convertMillisToDate(it, 0) } ?: "", // Wyświetlenie daty z zerowym czasem
             onValueChange = { },
             label = { Text("Date") },
             readOnly = true,
@@ -261,7 +331,77 @@ fun DatePickerDocked(onDateSelected: (Long?) -> Unit) {
                         showModeToggle = false
                     )
                     LaunchedEffect(datePickerState.selectedDateMillis) {
-                        onDateSelected(datePickerState.selectedDateMillis)
+                        // Przekształcenie daty na 00:00 i przekazanie do onDateSelected
+                        onDateSelected(selectedDate)
+                    }
+                }
+            }
+        }
+    }
+}
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun TimePickerDocked(onTimeSelected: (Int, Int) -> Unit) {
+    var showTimePicker by remember { mutableStateOf(false) }
+
+    val timePickerState = rememberTimePickerState(
+        initialHour = 12,
+        initialMinute = 0,
+        is24Hour = true
+    )
+
+    // Przygotowanie wyświetlanej godziny
+    val selectedTime = String.format("%02d:%02d", timePickerState.hour, timePickerState.minute)
+
+    Box(
+        modifier = Modifier.fillMaxWidth(),
+    ) {
+        OutlinedTextField(
+            value = selectedTime,
+            onValueChange = { },
+            label = { Text("Time") },
+            readOnly = true,
+            trailingIcon = {
+                IconButton(onClick = { showTimePicker = !showTimePicker }) {
+                    Icon(
+                        imageVector = Icons.Default.Add, // Można zmienić ikonę na zegar
+                        contentDescription = "Select time"
+                    )
+                }
+            },
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(64.dp)
+        )
+
+        if (showTimePicker) {
+            Popup(
+                onDismissRequest = { showTimePicker = false },
+                alignment = Alignment.Center // Ustawić na środku ekranu
+            ) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize() // Wypełnia cały dostępny obszar ekranu
+                        .wrapContentSize(align = Alignment.Center) // Ustawi zawartość na środku
+                        .shadow(elevation = 4.dp)
+                        .background(MaterialTheme.colorScheme.surface)
+                        .padding(16.dp)
+                ) {
+                    Column {
+                        TimePicker(
+                            state = timePickerState,
+                        )
+
+                        Button(onClick = {
+                            // Zatwierdzenie godziny
+                            onTimeSelected(timePickerState.hour, timePickerState.minute)
+                            showTimePicker = false
+                        },
+                            modifier = Modifier.align(Alignment.End)
+                            ){
+                            Text("Confirm")
+
+                        }
                     }
                 }
             }
@@ -269,8 +409,14 @@ fun DatePickerDocked(onDateSelected: (Long?) -> Unit) {
     }
 }
 
-fun convertMillisToDate(millis: Long): String {
-    val formatter = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+fun convertMillisToDate(millis: Long, formatType: Int): String {
+    val formatter: SimpleDateFormat
+    if(formatType == 1) {
+        formatter = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.getDefault())
+    }
+    else {
+    formatter = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+    }
     return formatter.format(Date(millis))
 }
 
