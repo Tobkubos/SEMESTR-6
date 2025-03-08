@@ -39,9 +39,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.graphics.Color
 
 import androidx.compose.material3.SegmentedButton
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -102,22 +104,23 @@ fun MainScreen() {
         modifier = Modifier
             .fillMaxSize()
             .padding(55.dp), // Odstęp od krawędzi ekranu
-        verticalArrangement = Arrangement.spacedBy(10.dp, Alignment.CenterVertically),
+        verticalArrangement = Arrangement.spacedBy(10.dp, Alignment.Top),
         horizontalAlignment = Alignment.CenterHorizontally // Wyśrodkowanie w poziomie
     ) {
-        ThemeLabel("Ultimate Time Traveller")
-        Label1("Step 1. Choose a date")
+        ThemeLabel("Time Traveller")
+        Label1("Step 1. Choose date and time")
         DatePickerDocked(onDateSelected = { selectedDate = it })
         TimePickerDocked(onTimeSelected = { hour, minute ->
                                                 selectedHour = hour
                                                 selectedMinute = minute})
-        Label1("Step 2. Choose number and type")
+        Label1("Step 2. Choose value and type")
         Input1(num = num, onNumChange = { num = it })
         SingleChoiceSegmentedButton(selectedIndex = selectedIndex, onSelectedIndexChange = { selectedIndex = it })
         SingleChoiceSegmentedButton2(selectedIndex = selectedDirection, onSelectedIndexChange = { selectedDirection = it })
         //TimeTravelButton(num, selectedIndex, selectedDate, selectedDirection, onNewDateStringChange = {newDateString = it})
+        HorizontalDivider(thickness = 2.dp)
         Label3(output = newDateString, num = num, idx = selectedIndex, direction = selectedDirection, selectedHour, selectedMinute)
-
+        HorizontalDivider(thickness = 2.dp)
     }
 }
 
@@ -210,9 +213,9 @@ fun Input1(num: String, onNumChange: (String) -> Unit) {
 fun Label1(name: String) {
     Column(
         modifier = Modifier
-            .height(60.dp),
+            .height(25.dp),
         horizontalAlignment = Alignment.CenterHorizontally, // Wyśrodkowanie w poziomie
-        verticalArrangement = Arrangement.Bottom
+        verticalArrangement = Arrangement.Top
     ) {
         Text(
             text = name,
@@ -226,7 +229,7 @@ fun ThemeLabel(name: String) {
         modifier = Modifier
             .height(100.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Bottom
+        verticalArrangement = Arrangement.Center
     ) {
         Text(
             text = name,
@@ -245,7 +248,7 @@ fun Label3(output: String, num: String, idx: Int, direction: Int, h: Int, m: Int
         modifier = Modifier
             .height(65.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Bottom
+        verticalArrangement = Arrangement.Center
     ) {
         if (shouldShow) {
             val idxText = when (idx) {
@@ -259,10 +262,18 @@ fun Label3(output: String, num: String, idx: Int, direction: Int, h: Int, m: Int
 
             Text(
                 text = "in the $directionText of $num $idxText: $output",
-                fontSize = 20.sp
+                fontSize = 20.sp,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.fillMaxWidth()
             )
         } else {
-            Spacer(modifier = Modifier.height(24.dp))
+            Text(
+                text = "please insert value to calculate time travel",
+                color = Color.Red,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.fillMaxWidth()
+            )
+            //Spacer(modifier = Modifier.height(24.dp))
         }
     }
 }
