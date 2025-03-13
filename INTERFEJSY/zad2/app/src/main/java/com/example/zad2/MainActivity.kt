@@ -2,6 +2,7 @@ package com.example.zad2
 
 import android.R
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -28,6 +29,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 
 import androidx.compose.material3.Text
 import androidx.compose.material3.lightColorScheme
@@ -43,10 +45,12 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.PreviewDynamicColors
 import androidx.compose.ui.tooling.preview.PreviewLightDark
 
 import androidx.compose.ui.unit.sp
+import com.example.zad2.ui.theme.blackCustom
 
 
 class MainActivity : ComponentActivity() {
@@ -73,7 +77,7 @@ fun MainScreen() {
     var Days by remember { mutableStateOf("0") }
     var Hours by remember { mutableStateOf("0") }
     var Minutes by remember { mutableStateOf("0") }
-
+    Surface {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -81,7 +85,7 @@ fun MainScreen() {
         verticalArrangement = Arrangement.spacedBy(16.dp, Alignment.CenterVertically),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Label("Time Calculator", 25)
+        Label("Time Calculator", 25, blackCustom)
 
         Box(
             modifier = Modifier
@@ -99,7 +103,7 @@ fun MainScreen() {
                 verticalArrangement = Arrangement.spacedBy(8.dp),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Label("Date 1", 20)
+                Label("Date 1", 20, Color.White)
                 DatePickerFieldToModal(selectedDate = selectedDate1, onDateSelected = { newDate -> selectedDate1 = newDate })
                 TimePickerFieldToModal(selectedTime = selectedTime1, onTimeSelected = { newTime -> selectedTime1 = newTime })
             }
@@ -113,7 +117,7 @@ fun MainScreen() {
                 .padding(8.dp)
                 .background(
                     color = MaterialTheme.colorScheme.primaryContainer,
-                    shape = RoundedCornerShape(16.dp) // Zaokrąglone rogi
+                    shape = RoundedCornerShape(16.dp), // Zaokrąglone rogi
                 )
                 .padding(16.dp),
             contentAlignment = Alignment.Center
@@ -122,12 +126,12 @@ fun MainScreen() {
                 verticalArrangement = Arrangement.spacedBy(8.dp),
                 horizontalAlignment = Alignment.CenterHorizontally)
             {
-                Label("Date 2", 20)
+                Label("Date 2", 20, Color.White)
                 DatePickerFieldToModal(selectedDate = selectedDate2, onDateSelected = { newDate -> selectedDate2 = newDate })
                 TimePickerFieldToModal(selectedTime = selectedTime2, onTimeSelected = { newTime -> selectedTime2 = newTime })
             }
         }
-
+        Log.d("ThemeTest", MaterialTheme.colorScheme.primary.toString())
         HorizontalDivider(thickness = 2.dp)
 
         Row(
@@ -137,20 +141,20 @@ fun MainScreen() {
             horizontalArrangement = Arrangement.SpaceEvenly
         ) {
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                Label("Weeks", 16)
-                Label(Weeks, 16)
+                Label("Weeks", 16, blackCustom)
+                Label(Weeks, 16, blackCustom)
             }
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                Label("Days", 16)
-                Label(Days, 16)
+                Label("Days", 16, blackCustom)
+                Label(Days, 16, blackCustom)
             }
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                Label("Hours", 16)
-                Label(Hours, 16)
+                Label("Hours", 16, blackCustom)
+                Label(Hours, 16, blackCustom)
             }
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                Label("Minutes", 16)
-                Label(Minutes, 16)
+                Label("Minutes", 16, blackCustom)
+                Label(Minutes, 16, blackCustom)
             }
         }
 
@@ -163,13 +167,15 @@ fun MainScreen() {
         })
     }
 }
+}
 
 @Composable
-fun Label(name: String, fontsize : Int, modifier: Modifier = Modifier) {
+fun Label(name: String, fontsize : Int, color : Color ,modifier: Modifier = Modifier) {
     Text(
         text = name,
         modifier = modifier,
         fontSize = fontsize.sp,
+        color = color
     )
 }
 

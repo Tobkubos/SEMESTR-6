@@ -19,9 +19,11 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.PointerEventPass
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.dp
+import com.example.zad2.ui.theme.grayCustom
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
@@ -39,6 +41,17 @@ fun TimePickerFieldToModal(selectedTime: Long?,
         value = selectedTime?.let { convertMillisToTime(it) } ?: "",
         onValueChange = { },
         label = { Text("Time") },
+        colors = OutlinedTextFieldDefaults.colors(
+            focusedTextColor = Color.White, // Kolor tekstu, gdy aktywne
+            unfocusedTextColor = Color.White, // Kolor tekstu normalnie
+            focusedBorderColor = Color.White, // Kolor obramowania po kliknięciu
+            unfocusedBorderColor = Color.White, // Kolor obramowania normalnie
+            focusedLabelColor = Color.White, // Kolor etykiety po kliknięciu
+            unfocusedLabelColor = Color.White, // Kolor etykiety normalnie
+            cursorColor = Color.White, // Kolor kursora
+            focusedContainerColor = Color.DarkGray, // Tło pola po kliknięciu
+            unfocusedContainerColor = grayCustom // Tło pola normalnie
+        ),
         trailingIcon = {
             Icon(Icons.Default.AddCircle, contentDescription = "Select date")
         },
@@ -96,7 +109,13 @@ fun DialWithDialogExample(
         onDismissRequest = onDismiss,
         title = { Text("Select Time") },
         text = {
-            TimePicker(state = timePickerState)
+
+            TimePicker(state = timePickerState,
+                colors = TimePickerDefaults.colors(
+                    clockDialSelectedContentColor = Color.White,
+                    clockDialUnselectedContentColor = grayCustom,
+                    timeSelectorSelectedContentColor = Color.White
+                ))
         },
         confirmButton = {
             TextButton(onClick = { onConfirm(timePickerState) }) {

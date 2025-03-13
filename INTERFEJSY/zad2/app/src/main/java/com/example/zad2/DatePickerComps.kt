@@ -14,12 +14,17 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material3.Button
 import androidx.compose.material3.DatePicker
+import androidx.compose.material3.DatePickerDefaults
 import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
+import androidx.compose.material3.TextFieldDefaults
+import androidx.compose.material3.TimePickerDefaults
 import androidx.compose.material3.TimePickerState
 import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
@@ -29,9 +34,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.PointerEventPass
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.dp
+import com.example.zad2.ui.theme.blackCustom
+import com.example.zad2.ui.theme.grayCustom
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
@@ -49,10 +57,23 @@ fun DatePickerFieldToModal(selectedDate: Long?,
         value = selectedDate?.let { convertMillisToDate(it) } ?: "",
         onValueChange = { },
         label = { Text("Date") },
+        colors = OutlinedTextFieldDefaults.colors(
+            focusedTextColor = Color.White, // Kolor tekstu, gdy aktywne
+            unfocusedTextColor = Color.White, // Kolor tekstu normalnie
+            focusedBorderColor = Color.White, // Kolor obramowania po kliknięciu
+            unfocusedBorderColor = Color.White, // Kolor obramowania normalnie
+            focusedLabelColor = Color.White, // Kolor etykiety po kliknięciu
+            unfocusedLabelColor = Color.White, // Kolor etykiety normalnie
+            cursorColor = Color.White, // Kolor kursora
+            focusedContainerColor = Color.DarkGray, // Tło pola po kliknięciu
+            unfocusedContainerColor = grayCustom // Tło pola normalnie
+        ),
         placeholder = { Text("MM/DD/YYYY") },
+
         trailingIcon = {
             Icon(Icons.Default.DateRange, contentDescription = "Select date")
         },
+
         modifier = modifier
             .fillMaxWidth()
             .pointerInput(selectedDate) {
@@ -113,7 +134,14 @@ fun DatePickerModal(
             }
         }
     ) {
-        DatePicker(state = datePickerState)
+        MaterialTheme(
+            colorScheme = MaterialTheme.colorScheme.copy(
+                onSurface = blackCustom,
+                onSurfaceVariant = blackCustom
+            )
+        ) {
+            DatePicker(state = datePickerState)
+        }
     }
 }
 
