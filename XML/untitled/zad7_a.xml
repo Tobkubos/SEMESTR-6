@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE sprzet [
+        <!ELEMENT sprzet (laptop|(monitor*,PC))>
+        <!ELEMENT laptop (#PCDATA)>
+        <!ELEMENT monitor EMPTY>
+        <!ELEMENT PC (#PCDATA)>
+        <!ATTLIST monitor wielkosc CDATA #REQUIRED
+                model CDATA #IMPLIED>
+        ]>
+
+<sprzet>
+    <monitor wielkosc="24" model="samsung"/>
+    <monitor wielkosc="22"/>
+    <PC>Mac</PC>
+</sprzet>

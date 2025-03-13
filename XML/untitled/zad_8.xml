@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE zajecia [
+        <!ELEMENT zajecia (przedmiot)*>
+        <!ELEMENT przedmiot (nazwa,opis?, (prowadzacy), student+)>
+        <!ELEMENT nazwa (#PCDATA)>
+        <!ELEMENT opis (#PCDATA)>
+        <!ELEMENT prowadzacy (imie+, nazwisko, ((tytul|stanowisko)|(tytul, stanowisko))?)>
+        <!ELEMENT imie (#PCDATA)>
+        <!ELEMENT nazwisko (#PCDATA)>
+        <!ELEMENT tytul (#PCDATA)>
+        <!ELEMENT stanowisko (#PCDATA)>
+        <!ELEMENT student (imie+, nazwisko)>
+
+        <!ATTLIST przedmiot
+                typ (wyklad|labolatorium|ćwiczenia|seminarium|projekt) #REQUIRED
+                liczba_godzin CDATA "30"
+                sala CDATA #IMPLIED
+                >
+        <!ATTLIST student
+                ocena (ndst|dst|db|bdb) "bdb"
+                >
+        ]>
+
+<zajecia>
+    <przedmiot typ="wyklad" liczba_godzin="40" sala="123">
+        <nazwa>ALGORYTMY</nazwa>
+        <prowadzacy>
+            <imie>Jan</imie>
+            <nazwisko>Kowalski</nazwisko>
+            <tytul>Profesor</tytul>
+        </prowadzacy>
+        <student>
+            <imie>Jan</imie>
+            <nazwisko>Kowalski</nazwisko>
+        </student>
+    </przedmiot>
+    <przedmiot typ="ćwiczenia" sala="2">
+        <nazwa>ALGORYTMY</nazwa>
+        <prowadzacy>
+            <imie>Jakub</imie>
+            <nazwisko>Kowalski</nazwisko>
+        </prowadzacy>
+        <student ocena="dst">
+            <imie>Jakub</imie>
+            <nazwisko>Kowal</nazwisko>
+        </student>
+        <student ocena="bdb">
+            <imie>Konrad</imie>
+            <nazwisko>Kowalski</nazwisko>
+        </student>
+    </przedmiot>
+</zajecia>
