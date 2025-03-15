@@ -1,6 +1,8 @@
 package com.example.zad2
 
 import android.R
+import android.content.Context
+import android.content.res.Configuration
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
@@ -18,8 +20,10 @@ import androidx.compose.foundation.layout.Spacer
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
@@ -51,17 +55,30 @@ import androidx.compose.ui.tooling.preview.PreviewLightDark
 
 import androidx.compose.ui.unit.sp
 import com.example.zad2.ui.theme.blackCustom
+import java.util.Locale
 
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         enableEdgeToEdge()
         setContent {
             Zad2Theme {
                 MainScreen()
             }
         }
+    }
+
+    override fun attachBaseContext(newBase: Context) {
+        val locale = Locale("en") // Wymuszenie języka angielskiego
+        Locale.setDefault(locale)
+
+        val config = Configuration(newBase.resources.configuration)
+        config.setLocale(locale)
+
+        val context = newBase.createConfigurationContext(config)
+        super.attachBaseContext(context)
     }
 }
 
@@ -109,7 +126,7 @@ fun MainScreen() {
             }
         }
 
-        HorizontalDivider(thickness = 2.dp)
+        HorizontalDivider(thickness = 5.dp, color = blackCustom)
 
         Box(
             modifier = Modifier
@@ -132,7 +149,7 @@ fun MainScreen() {
             }
         }
         Log.d("ThemeTest", MaterialTheme.colorScheme.primary.toString())
-        HorizontalDivider(thickness = 2.dp)
+        HorizontalDivider(thickness = 5.dp, color = blackCustom)
 
         Row(
             modifier = Modifier
@@ -204,7 +221,10 @@ fun CalculateButton(
             // Przekazujemy wynik do funkcji onResult
             onResult(diffWeeks.toString(), (diffDays % 7).toString(), (diffHours % 24).toString(), (diffMinutes % 60).toString())
         }
-    }
+    },
+        modifier = Modifier
+            .width(200.dp)  // Ustawienie szerokości na 200dp
+            .height(50.dp)  // Ustawienie wysokości na 50dp
     ) {
         Text("Calculate")
     }

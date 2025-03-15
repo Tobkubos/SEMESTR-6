@@ -57,6 +57,7 @@ fun DatePickerFieldToModal(selectedDate: Long?,
         value = selectedDate?.let { convertMillisToDate(it) } ?: "",
         onValueChange = { },
         label = { Text("Date") },
+        readOnly = true,
         colors = OutlinedTextFieldDefaults.colors(
             focusedTextColor = Color.White, // Kolor tekstu, gdy aktywne
             unfocusedTextColor = Color.White, // Kolor tekstu normalnie

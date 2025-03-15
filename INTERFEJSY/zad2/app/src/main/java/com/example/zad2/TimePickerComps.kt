@@ -41,6 +41,7 @@ fun TimePickerFieldToModal(selectedTime: Long?,
         value = selectedTime?.let { convertMillisToTime(it) } ?: "",
         onValueChange = { },
         label = { Text("Time") },
+        readOnly = true,
         colors = OutlinedTextFieldDefaults.colors(
             focusedTextColor = Color.White, // Kolor tekstu, gdy aktywne
             unfocusedTextColor = Color.White, // Kolor tekstu normalnie
