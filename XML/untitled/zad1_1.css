@@ -1,0 +1,86 @@
+* {
+    font-family: "Roboto Thin", sans-serif;
+}
+
+
+
+spis_publikacji {
+    display: block;
+     color: #000000;
+     background-color : white;
+     width: 100%;
+}
+
+publikacja {
+    margin: 25px;
+    border: solid 1px black;
+    display: block;
+    background-color : yellow;
+}
+
+
+tytul {
+    display: block;
+    content: "Tytul";
+    background-color: dodgerblue;
+    font-size: 21px;
+    font-weight: bold;
+    padding: 10px;
+    color: white;
+}
+
+dzial, tom, numer, strona, rok, wydawnictwo, czasopismo{
+    display: block;
+    font-size: 15px;
+    padding-left: 10px;
+    background-color: #cadded;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    font-weight: bold;
+    color: #2f3567;
+}
+
+
+autor{
+    display: block;
+    content: "Tytul";
+    background-color: #f3f8ff;
+    font-size: 21px;
+    font-weight: bold;
+    padding-left:25px;
+    color: #2f3567;
+}
+autorzy{
+    display: block;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    background-color: #f3f8ff;
+}
+
+autor:before{
+    content:"Autor: "
+}
+tytul:before{
+    content: "Tytuł: ";
+}
+tom:before{
+    content: "Tom: ";
+}
+dzial:before{
+    content: "Dział: ";
+}
+strona:before{
+    content: "Strona: "
+}
+numer:before{
+    content: "Numer: "
+}
+rok:before{
+    content: "Rok wydania: "
+}
+wydawnictwo:before{
+    content: "Wydawnictwo: "
+}
+czasopismo:before{
+    content: "Czasopismo: "
+}

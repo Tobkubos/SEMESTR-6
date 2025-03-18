@@ -1,0 +1,85 @@
+* {
+    font-family: "Roboto Thin", sans-serif;
+}
+
+spis_publikacji {
+    display: block;
+    background-color : white;
+    width: 100%;
+}
+
+publikacja {
+    margin: 25px;
+    border: solid 1px black;
+    display: block;
+    background-color : white;
+}
+
+tytul {
+    display: block;
+    content: "Tytul";
+    background-color: dodgerblue;
+    font-size: 21px;
+    font-weight: bold;
+    padding: 10px;
+    color: white;
+}
+
+rok, dzial, wydawnictwo, czasopismo{
+    display: block;
+    font-size: 15px;
+    padding-left: 10px;
+    background-color: #cadded;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    font-weight: bold;
+    color: #2f3567;
+}
+
+
+
+publikacja[tom][numer]::before {
+    content: "TOM: " attr(tom) ", NUMER: " attr(numer);
+    display: block;
+    font-weight: bold;
+    background-color: white;
+}
+
+publikacja[tom][strona]::before {
+    content: "TOM: " attr(tom) ", STRONA: " attr(strona);
+    display: block;
+    font-weight: bold;
+    background-color: white;
+}
+
+autorzy{
+    display: block;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    background-color: #f3f8ff;
+}
+
+autor::before {
+    content: "Autor: " attr(imie) " " attr(nazwisko);
+    font-weight: bold;
+    display: block;
+    background-color: #f3f8ff;
+    font-size: 21px;
+    padding-left:25px;
+    color: #2f3567;
+}
+wydawnictwo:before{
+    content: "Wydawnictwo: "
+}
+czasopismo:before{
+    content: "Czasopismo: "
+}
+rok:before{
+    content: "Rok wydania: "
+}
+tytul:before{
+    content: "Tytuł: ";
+}
+dzial:before{
+    content: "Dział: ";
+}
