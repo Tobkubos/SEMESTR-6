@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<spis_publikacji xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                 xsi:noNamespaceSchemaLocation="SCHEMA_4_1.xsd">
+    <publikacja>
+        <tytul>Struktura Sieci i adresowanie</tytul>
+        <dzial>Zagadnienia Informatyczne</dzial>
+        <tom>4</tom>
+        <numer>3</numer>
+        <rok>2004</rok>
+        <autorzy>
+            <autor>
+                <imie>Łukasz</imie>
+                <nazwisko>Kowalski</nazwisko>
+            </autor>
+            <autor>
+                <imie>Tomasz</imie>
+                <nazwisko>Szczepaniak</nazwisko>
+            </autor>
+        </autorzy>
+    </publikacja>
+
+    <publikacja>
+        <tytul>Matematyka Dyskretna</tytul>
+        <dzial>Matematyka dla Politechnik</dzial>
+        <wydawnictwo>Wydawnictwa Naukowe PWN</wydawnictwo>
+        <rok>2003</rok>
+        <autorzy>
+            <autor>
+                <imie>Witold</imie>
+                <nazwisko>Żakowski</nazwisko>
+            </autor>
+            <autor>
+                <imie>Tomasz</imie>
+                <nazwisko>Żakowski</nazwisko>
+            </autor>
+        </autorzy>
+    </publikacja>
+
+    <publikacja>
+        <tytul>Gramatyka Angielska</tytul>
+        <wydawnictwo>Wydawnictwa Szkolne</wydawnictwo>
+        <rok>2006</rok>
+        <autorzy>
+
+            <autor>
+                <imie>Bronisława</imie>
+                <nazwisko>Jasińska</nazwisko>
+            </autor>
+
+            <autor>
+                <imie>Janina</imie>
+                <nazwisko>Nowak</nazwisko>
+            </autor>
+
+            <autor>
+                <imie>Monika</imie>
+                <nazwisko>Wojciechowska</nazwisko>
+            </autor>
+        </autorzy>
+    </publikacja>
+
+    <publikacja>
+        <tytul>Positron Annihiolation in Solid and Liquid Bi40Sn60 Alloy</tytul>
+        <czasopismo>Acta Physica Polonica</czasopismo>
+        <tom>95</tom>
+        <strona>479</strona>
+        <rok>1987</rok>
+        <autorzy>
+            <autor>
+                <imie>Stanisław</imie>
+                <nazwisko>Chabik</nazwisko>
+            </autor>
+            <autor>
+                <imie>Wanda</imie>
+                <nazwisko>Rudzińska</nazwisko>
+            </autor>
+            <autor>
+                <imie>Marek</imie>
+                <nazwisko>Szuszkiewicz</nazwisko>
+            </autor>
+        </autorzy>
+    </publikacja>
+</spis_publikacji>

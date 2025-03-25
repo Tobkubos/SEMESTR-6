@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<spis xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xsi:noNamespaceSchemaLocation="SCHEMA_2.xsd">
+    <osoba wiek="23">
+        <imie>Marek</imie>
+        <nazwisko>Nowak</nazwisko>
+    </osoba>
+    <osoba wiek="33">
+        <imie>Tomasz</imie>
+        <nazwisko>Pawlak</nazwisko>
+    </osoba>
+    <osoba wiek="27">
+        <imie>Piotr</imie>
+        <nazwisko>Kaczkowski</nazwisko>
+    </osoba>
+</spis>
