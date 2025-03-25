@@ -1,6 +1,5 @@
 package com.example.zad3
 
-import android.R
 import android.graphics.fonts.FontStyle
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -121,8 +120,8 @@ fun Input1(num: String, onNumChange: (String) -> Unit) {
                     keyboardController?.hide()
                 }
             ),
-            label = { Text("Enter number") },
-            textStyle = TextStyle(fontSize = 20.sp),
+            label = { Text("Enter number (max 8 digits)") },
+            textStyle = TextStyle(fontSize = 15.sp),
             shape = RoundedCornerShape(16.dp),
             colors = OutlinedTextFieldDefaults.colors(
                 focusedBorderColor = Color.Transparent,
@@ -223,7 +222,7 @@ fun LabeledBox(label: String) {
 }
 
 fun convertNumber(input: String, system: String): String {
-    if (input.isEmpty()) return "Enter a number"
+    if (input.isEmpty()) return "no number"
 
     return try {
         val decimal = input.toInt()
