@@ -80,7 +80,12 @@ fun MainScreen() {
             Phone("666666666", dateFormat.parse("26/21/2023 09:10")!!, dateFormat.parse("26/21/2023 09:40")!!),
             Phone("555555555", dateFormat.parse("27/21/2023 11:00")!!, dateFormat.parse("27/21/2023 11:30")!!),
             Phone("444444444", dateFormat.parse("28/21/2023 08:45")!!, dateFormat.parse("28/21/2023 09:00")!!),
-            Phone("333333333", dateFormat.parse("29/21/2023 13:00")!!, dateFormat.parse("29/21/2023 13:20")!!)
+            Phone("814488888", dateFormat.parse("24/21/2023 10:00")!!, dateFormat.parse("24/21/2023 10:30")!!),
+            Phone("777757477", dateFormat.parse("25/21/2023 12:00")!!, dateFormat.parse("25/21/2023 12:15")!!),
+            Phone("633333336", dateFormat.parse("26/21/2023 09:10")!!, dateFormat.parse("26/21/2023 09:40")!!),
+            Phone("757575755", dateFormat.parse("27/21/2023 11:00")!!, dateFormat.parse("27/21/2023 11:30")!!),
+            Phone("449999999", dateFormat.parse("28/21/2023 08:45")!!, dateFormat.parse("28/21/2023 09:00")!!),
+            Phone("112344433", dateFormat.parse("29/21/2023 13:00")!!, dateFormat.parse("29/21/2023 13:20")!!)
         )
 
         val phoneData2 = listOf(
@@ -90,6 +95,9 @@ fun MainScreen() {
             Phone("879087090", dateFormat.parse("26/21/2023 09:10")!!, dateFormat.parse("26/21/2023 09:40")!!),
             Phone("089780707", dateFormat.parse("27/21/2023 11:00")!!, dateFormat.parse("27/21/2023 11:30")!!),
             Phone("678656544", dateFormat.parse("28/21/2023 08:45")!!, dateFormat.parse("28/21/2023 09:00")!!),
+            Phone("123870290", dateFormat.parse("26/21/2023 09:10")!!, dateFormat.parse("26/21/2023 09:40")!!),
+            Phone("327807207", dateFormat.parse("27/21/2023 11:00")!!, dateFormat.parse("27/21/2023 11:30")!!),
+            Phone("222256544", dateFormat.parse("28/21/2023 08:45")!!, dateFormat.parse("28/21/2023 09:00")!!),
             Phone("331311333", dateFormat.parse("29/21/2023 13:00")!!, dateFormat.parse("29/21/2023 13:20")!!)
         )
 
@@ -141,7 +149,7 @@ fun MainScreen() {
                                     modifier = Modifier.fillMaxWidth(),
                                     horizontalArrangement = Arrangement.Start  // Wyrównanie do lewej
                                 ) {
-                                    Text(text = "+48 " + formatPhoneNumber(data.number))  // Tekst wewnątrz przycisku
+                                    Text(text = formatPhoneNumber(data.number))  // Tekst wewnątrz przycisku
                                 }
                             }
                         }
@@ -164,7 +172,7 @@ fun MainScreen() {
                     TextField(
                         value = if (selectedPhoneNumber != null) {
                             // Formatowanie tekstu: numer telefonu + daty
-                            "Numer: +48 ${selectedPhoneNumber?.number}\n" +
+                            "Numer: ${selectedPhoneNumber?.number}\n" +
                                     "Data początkowa: ${formatDate(selectedPhoneNumber?.start_date ?: Date())}\n" +
                                     "Data końcowa: ${formatDate(selectedPhoneNumber?.end_date ?: Date())}"
                         } else "",
