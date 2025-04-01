@@ -20,7 +20,8 @@ def Cesar(alphabet_idx, to_code, move, isDecoding):
     output = ""
     if(alphabet_idx!=2):
         to_code_lower = to_code.lower()
-    to_code_lower = to_code
+    else:
+        to_code_lower = to_code
     for i in to_code_lower:
         for j in alphabet:
             if(i == j and i in alphabet):
