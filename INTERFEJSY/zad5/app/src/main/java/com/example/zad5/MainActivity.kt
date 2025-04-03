@@ -32,6 +32,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -90,11 +91,22 @@ fun MainScreen() {
                     .fillMaxSize()
                     .padding(paddingValues)
             ) {
+                Spacer(modifier = Modifier.height(8.dp))
+                Text(
+                    text = "Wyszukiwaczo-Inator",
+                    modifier = Modifier
+                        .align(alignment = Alignment.CenterHorizontally),
+                            style = TextStyle(
+                                fontSize = 24.sp,
+                                fontWeight = FontWeight.Bold,  // Wybierz odpowiednią wagę czcionki
+                                color = Color.Black,)  // Centrujemy tekst w obrębie dostępnej przestrzeni
+                )
                 AnimatedVisibility(
                     visible = isSearchBarVisible,
                     //enter = slideInVertically(initialOffsetY = { -it }), // Wsuń z góry
                     //exit = slideOutVertically(targetOffsetY = { -it })  // Wysuń do góry
                 ) {
+
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.spacedBy(8.dp),
@@ -137,7 +149,7 @@ fun MainScreen() {
                             modifier = Modifier.height(IntrinsicSize.Min),
                             onClick = { prepareAndLoadUrl(searchText) }
                         ) {
-                            Text("Load", fontSize = 14.sp)
+                            Text("Załaduj", fontSize = 14.sp)
                         }
                     }
                 }
@@ -158,7 +170,7 @@ fun MainScreen() {
                         modifier = Modifier.weight(1f),
                         contentPadding = PaddingValues(horizontal = 8.dp)
                     ) {
-                        Text("Back", fontSize = 14.sp, maxLines = 1)
+                        Text("Poprzednia", fontSize = 14.sp, maxLines = 1)
                     }
 
                     // Przycisk Forward
@@ -169,7 +181,7 @@ fun MainScreen() {
                         modifier = Modifier.weight(1f),
                         contentPadding = PaddingValues(horizontal = 8.dp)
                     ) {
-                        Text("Forward", fontSize = 14.sp, maxLines = 1)
+                        Text("Następna", fontSize = 14.sp, maxLines = 1)
                     }
 
                     // Przycisk Hide/Show Search Bar
