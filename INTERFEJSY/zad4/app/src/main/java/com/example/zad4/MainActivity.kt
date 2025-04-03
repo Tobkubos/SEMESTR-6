@@ -241,7 +241,10 @@ fun SearchBar(searchText: String, onSearchTextChange: (String) -> Unit) {
         singleLine = true,
         keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
         trailingIcon = {
-            Icon(imageVector = Icons.Default.Search, contentDescription = "Search")
+            Icon(imageVector = Icons.Default.Search, contentDescription = "Search",
+            modifier = Modifier.clickable {
+                keyboardController?.hide() // Ukrycie klawiatury po kliknięciu w ikonę
+            })
         }
     )
 }

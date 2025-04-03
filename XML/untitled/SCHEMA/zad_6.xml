@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<losowania xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:noNamespaceSchemaLocation="SCHEMA_6.xsd">
+
+        <wylosowane>1 2 3 4 5 36</wylosowane>
+        <wylosowane>12 12 12 12 12 12</wylosowane>
+</losowania>

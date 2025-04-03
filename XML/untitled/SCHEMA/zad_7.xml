@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<SpisZamowienIDostaw xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                     xsi:noNamespaceSchemaLocation="SCHEMA_7.xsd">
+
+<Dostawa>
+        <rodzajOwocu>qwe</rodzajOwocu>
+        <wielkoscDostawy>123</wielkoscDostawy>
+        <dostawca>qwe</dostawca>
+        <firmaTransportowa>qwe</firmaTransportowa>
+        <dataDostawy></dataDostawy>
+        <dataPrzydatnosci></dataPrzydatnosci>
+        <jakosc>pierwsza</jakosc>
+        <cena>133</cena>
+</Dostawa>
+</SpisZamowienIDostaw>

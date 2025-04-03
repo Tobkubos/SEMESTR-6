@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+    <xs:simpleType name="liczba">
+        <xs:restriction base="xs:integer">
+            <xs:minInclusive value="1"/>
+            <xs:maxInclusive value="49"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="liczby">
+        <xs:restriction>
+            <xs:simpleType>
+                <xs:list itemType="liczba"/>
+            </xs:simpleType>
+            <xs:length value="6"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:element name="losowania">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="wylosowane" type="liczby" maxOccurs="unbounded"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+
+</xs:schema>

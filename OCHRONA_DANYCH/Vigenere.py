@@ -1,28 +1,25 @@
 import collections
 import matplotlib.pyplot as plt
 import numpy as np
+import math
+import operator
 
-codeType = ["abcdefghijklmnopqrstuwxyz0123456789",
-            "0123456789abcdefghijklmnopqrstuwxyz",
-    "abcdefghijklmnopqrstuwxyzABCDEFGHIJKLMNOPQRSTUWXYZ"]
+codeType = "abcdefghijklmnopqrstuwxyzABCDEFGHIJKLMNOPQRSTUWXYZ"
 
-to_code = "abcdefghijklmnopqrstuqwxyzABCDEFGHIJKLMNOPQRSTUWXYZ"
-key = "toilet"
+to_code = "abcdefghijklmnopqrstuwxyzABCDEFGHIJKLMNOPQRSTUWXYZ"
+key = "zielone"
 coded = ""
 
-#f = open("Frankenstein.txt", "r", encoding="UTF-8")
-#to_code = f.read()
+f = open("Frankenstein.txt", "r", encoding="UTF-8")
+to_code = f.read()
 
-def VigenereCode(alphabet_idx, to_code, key, isCoding):
-    alphabet = codeType[alphabet_idx]
+def VigenereCode(to_code, key, isCoding):
+    alphabet = codeType
     output = ""
     key_index = 0
     key_length = len(key)
     
-    if(alphabet_idx!=2): to_code_lower = to_code.lower() 
-    else: to_code_lower = to_code
-          
-    for char in to_code_lower:
+    for char in to_code:
         if char in alphabet:
             char_index = alphabet.find(char)
             key_char_index = alphabet.find(key[key_index % key_length])
@@ -49,11 +46,12 @@ def VigenereCode(alphabet_idx, to_code, key, isCoding):
 
 #plt.tight_layout()
 #plt.show()
-coded = VigenereCode(2, to_code, key, True)
-decoded = VigenereCode(2, coded, key, False)
+
+coded = VigenereCode(to_code, key, True)
+decoded = VigenereCode(coded, key, False)
 
 print(coded)
-print(codeType[2])
+print(codeType)
 print(decoded)
 
 def sprawdzCzestotliwosc_kwadr(tekst, ax=None):    
@@ -86,6 +84,185 @@ def pokazPlot(licznik, ax, wynik):
 
 
 
+#########################################################
+#
+#               ATAK DESZYFRUJĄCY!
+#
+#########################################################
+
+def find_repeated_sequences(text, seq_len):
+    """Znajduje powtarzające się sekwencje o danej długości i ich pozycje."""
+    sequences = collections.defaultdict(list)
+    for i in range(len(text) - seq_len + 1):
+        seq = text[i:i+seq_len]
+        # Sprawdzamy, czy wszystkie znaki sekwencji są w alfabecie,
+        # aby uniknąć fałszywych powtórzeń z np. znakami interpunkcyjnymi.
+        # Można to uprościć, jeśli najpierw oczyścimy tekst.
+        # if all(c in codeType for c in seq): # Opcjonalne, ale może pomóc
+        sequences[seq].append(i)
+    # Zwracamy tylko te sekwencje, które wystąpiły więcej niż raz
+    return {seq: pos for seq, pos in sequences.items() if len(pos) > 1}
+
+def get_sequence_spacings(sequences):
+    """Oblicza odległości między wystąpieniami tych samych sekwencji."""
+    spacings = []
+    for seq, positions in sequences.items():
+        for i in range(len(positions) - 1):
+            spacings.append(positions[i+1] - positions[i])
+    return spacings
+
+def get_factors(number):
+    """Znajduje wszystkie dzielniki liczby większe od 1."""
+    factors = set()
+    # Optymalizacja: sprawdzamy tylko do pierwiastka kwadratowego
+    for i in range(2, int(math.sqrt(number)) + 1):
+        if number % i == 0:
+            factors.add(i)
+            factors.add(number // i)
+    # Sama liczba też jest swoim dzielnikiem (jeśli > 1)
+    if number > 1:
+         factors.add(number)
+    return list(factors)
+
+def estimate_key_length(ciphertext, min_len=3, max_len=20, min_seq_len=3, max_seq_len=5):
+    """Estymuje długość klucza metodą Kasiskiego."""
+    # Usuwamy znaki spoza alfabetu, żeby nie zaburzały analizy odległości
+    filtered_ciphertext = "".join(c for c in ciphertext if c in codeType)
+    if not filtered_ciphertext:
+        print("Brak znaków z alfabetu w szyfrogramie do analizy.")
+        return None
+
+    all_spacings = []
+    for seq_len in range(min_seq_len, max_seq_len + 1):
+        sequences = find_repeated_sequences(filtered_ciphertext, seq_len)
+        spacings = get_sequence_spacings(sequences)
+        all_spacings.extend(spacings)
+
+    if not all_spacings:
+        print("Nie znaleziono powtarzających się sekwencji. Metoda Kasiskiego może zawieść.")
+        # Można spróbować metody Indeksu Koincydencji jako alternatywy
+        return None # Lub zwrócić domyślną/próbować IC
+
+    # Liczymy częstość występowania potencjalnych długości klucza (dzielników odległości)
+    possible_key_lengths = collections.Counter()
+    for space in all_spacings:
+        factors = get_factors(space)
+        for factor in factors:
+            if min_len <= factor <= max_len:
+                possible_key_lengths[factor] += 1
+
+    if not possible_key_lengths:
+        print(f"Nie znaleziono potencjalnych długości klucza w zakresie [{min_len}, {max_len}].")
+        return None
+
+    # Zwracamy najbardziej prawdopodobną długość klucza
+    # Sortujemy wg częstości malejąco, potem wg długości rosnąco (w razie remisu)
+    sorted_lengths = sorted(possible_key_lengths.items(), key=lambda item: (-item[1], item[0]))
+    # print("Prawdopodobne długości klucza (długość: liczba wskazań):", sorted_lengths) # Debug
+    most_likely_length = sorted_lengths[0][0]
+    return most_likely_length
 
 
+def analyze_frequency(text, alphabet):
+    """Oblicza częstość występowania liter z danego alfabetu w tekście."""
+    counts = collections.Counter(c for c in text if c in alphabet)
+    total = sum(counts.values())
+    if total == 0:
+        return {}
+    # Zwracamy posortowane od najczęstszej
+    frequencies = {char: count / total for char, count in counts.items()}
+    sorted_freq = dict(sorted(frequencies.items(), key=operator.itemgetter(1), reverse=True))
+    return sorted_freq
+
+def find_key(ciphertext, key_length, alphabet):
+    """Odnajduje klucz na podstawie analizy częstości pod-szyfrów."""
+    if key_length is None or key_length <= 0:
+         return None
+    recovered_key = ""
+    # Zakładamy, że najczęstsza litera w języku angielskim to 'e'.
+    # Musimy znaleźć jej odpowiednik w naszym 'codeType'
+    # Jeśli 'e' jest w alfabecie, użyj 'e'. Jeśli nie, wybierz inną (np. 'a').
+    assumed_most_freq_plain_char = 'e' if 'e' in alphabet else alphabet[0]
+    assumed_most_freq_plain_idx = alphabet.find(assumed_most_freq_plain_char)
+    if assumed_most_freq_plain_idx == -1:
+        print(f"Błąd: Założony najczęstszy znak '{assumed_most_freq_plain_char}' nie występuje w alfabecie.")
+        # W tym przypadku można by wziąć po prostu indeks 0 jako odniesienie.
+        # assumed_most_freq_plain_idx = 0 # Alternatywa
+        return None # Lub zwrócić błąd
+
+    # Filtrujemy szyfrogram, zostawiając tylko znaki z alfabetu
+    filtered_ciphertext = "".join(c for c in ciphertext if c in alphabet)
+    if not filtered_ciphertext:
+        return None # Nie ma czego analizować
+
+    for i in range(key_length):
+        # Wyodrębniamy pod-szyfr (co L-tą literę, zaczynając od i)
+        sub_cipher = filtered_ciphertext[i::key_length]
+        if not sub_cipher:
+            # Może się zdarzyć dla krótkich tekstów lub długich kluczy
+             print(f"Ostrzeżenie: Pod-szyfr {i+1} jest pusty.")
+             # Można dodać znak-wypełniacz lub zgłosić błąd
+             # Na razie pomijamy lub dodajemy np. pierwszą literę alfabetu
+             recovered_key += alphabet[0] # Proste obejście, może być niedokładne
+             continue
+
+        # Analizujemy częstość w pod-szyfrze
+        freq = analyze_frequency(sub_cipher, alphabet)
+        if not freq:
+             print(f"Ostrzeżenie: Nie udało się przeanalizować częstości dla pod-szyfru {i+1}.")
+             recovered_key += alphabet[0] # Proste obejście
+             continue
+
+        # Najczęstsza litera w tym pod-szyfrze
+        most_freq_cipher_char = list(freq.keys())[0]
+        most_freq_cipher_idx = alphabet.find(most_freq_cipher_char)
+
+        # Obliczamy przesunięcie (indeks litery klucza)
+        # shift = (indeks_zaszyfrowanej - indeks_oryginalnej) mod długość_alfabetu
+        key_char_index = (most_freq_cipher_idx - assumed_most_freq_plain_idx) % len(alphabet)
+        recovered_key += alphabet[key_char_index]
+
+    return recovered_key
+
+
+MIN_KEY_LEN = 3
+MAX_KEY_LEN = 15
+
+estimated_len = estimate_key_length(coded, min_len=MIN_KEY_LEN, max_len=MAX_KEY_LEN)
+
+if estimated_len:
+        print(f"Przypuszczalna długość klucza: {estimated_len}")
+
+        # Krok 2: Odnalezienie klucza
+        recovered_key = find_key(coded, estimated_len, codeType)
+
+        if recovered_key:
+            print(f"Odzyskany klucz: {recovered_key}")
+
+            # Sprawdzenie, czy odzyskany klucz pasuje (opcjonalne)
+            if recovered_key.lower() == key.lower(): # Porównujemy bez względu na wielkość liter
+                print(" sukces! Odzyskany klucz jest zgodny z oryginalnym.")
+            else:
+                print("Ostrzeżenie: Odzyskany klucz różni się od oryginalnego. Analiza mogła być niedokładna.")
+                print(f" Oryginalny: {key}")
+
+            # Krok 3: Deszyfrowanie za pomocą odzyskanego klucza
+            try:
+                decoded_text = VigenereCode(coded, recovered_key, False)
+                print("-" * 20)
+                print(f"Tekst odszyfrowany (fragment): {decoded_text[:200]}...")
+
+                # Proste sprawdzenie poprawności deszyfrowania
+                if decoded_text[:100] == to_code[:100]:
+                     print("Wygląda na to, że tekst został poprawnie odszyfrowany.")
+                else:
+                     print("Odszyfrowany tekst różni się od oryginału. Sprawdź odzyskany klucz i logikę.")
+
+            except ValueError as e:
+                 print(f"Błąd podczas deszyfrowania odzyskanym kluczem: {e}")
+
+        else:
+            print("Nie udało się odzyskać klucza na podstawie oszacowanej długości.")
+else:
+    print("Nie udało się oszacować długości klucza. Atak nie powiódł się.")
 

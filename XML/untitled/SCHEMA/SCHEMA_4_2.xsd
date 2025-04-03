@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:element name="spis_publikacji">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="publikacja" maxOccurs="unbounded">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="tytul" type="xs:string"/>
+                            <xs:element name="dzial" type="xs:string" minOccurs="0"/>
+                            <xs:element name="wydawnictwo" type="xs:string" minOccurs="0"/>
+                            <xs:element name="czasopismo" type="xs:string" minOccurs="0"/>
+                            <xs:element name="rok" type="xs:integer"/>
+                            <xs:element name="autorzy">
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element name="autor" maxOccurs="unbounded">
+                                            <xs:complexType>
+                                                <xs:attribute name="imie" type="xs:string" use="required"/>
+                                                <xs:attribute name="nazwisko" type="xs:string" use="required"/>
+                                            </xs:complexType>
+                                        </xs:element>
+                                    </xs:sequence>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                        <xs:attribute name="tom" type="xs:integer" use="optional"/>
+                        <xs:attribute name="numer" type="xs:integer" use="optional"/>
+                        <xs:attribute name="strona" type="xs:integer" use="optional"/>
+                    </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>

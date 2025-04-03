@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+    <xs:element name="imie" type="nazwa"/>
+    <xs:element name="nazwisko" type="nazwa"/>
+
+    <xs:simpleType name="nazwa">
+        <xs:restriction base="xs:string">
+            <xs:maxLength value="30"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:simpleType name="plecType">
+        <xs:restriction base="xs:string">
+            <xs:enumeration value="mężczyzna"/>
+            <xs:enumeration value="kobieta"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+
+    <xs:element name="osoba">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="nazwisko"/>
+                <xs:element ref="imie" minOccurs="1" maxOccurs="2"/>
+                <xs:element name="pesel">
+                    <xs:simpleType>
+                        <xs:restriction base="xs:string">
+                            <xs:pattern value="\d{11}"/>
+                        </xs:restriction>
+                    </xs:simpleType>
+                </xs:element>
+                <xs:element name="miejscowosc" type="nazwa"/>
+            </xs:sequence>
+            <xs:attribute name="plec" type="plecType" use="required"/>
+            <xs:attribute name="stan_cywilny" use="required">
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:enumeration value="kawaler/panna"/>
+                        <xs:enumeration value="żonaty/mężatka"/>
+                        <xs:enumeration value="wdowiec/wdowa"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:attribute>
+        </xs:complexType>
+    </xs:element>
+
+
+    <xs:element name="spis_osob">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element ref="osoba" maxOccurs="unbounded"/>
+            </xs:sequence>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>
