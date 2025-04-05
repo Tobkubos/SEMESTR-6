@@ -38,6 +38,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
+import androidx.compose.ui.window.Dialog
 import com.example.zad5.ui.theme.Zad5Theme
 import java.net.URLEncoder
 import java.nio.charset.StandardCharsets
@@ -54,6 +55,15 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+data class PopularSite(val name: String, val url: String)
+
+val popularSitesList = listOf(
+    PopularSite("Facebook", "https://facebook.com"),
+    PopularSite("WFiIS UŁ", "https://www.wfis.uni.lodz.pl/"),
+    PopularSite("nie klikać", "https://www.youtube.com/watch?v=dQw4w9WgXcQ")
+    // Możesz dodać więcej stron
+)
+
 @SuppressLint("SetJavaScriptEnabled")
 @Preview(showBackground = true)
 @Composable
@@ -64,7 +74,8 @@ fun MainScreen() {
     var canGoBack by remember { mutableStateOf(false) }
     var canGoForward by remember { mutableStateOf(false) }
     var isSearchBarVisible by remember { mutableStateOf(true) }
-
+    var showPopularSitesDialog by remember { mutableStateOf(false) }
+    var showEmptyUrlDialog by remember { mutableStateOf(false) }
     val keyboardController = LocalSoftwareKeyboardController.current
     val context = LocalContext.current
 
@@ -73,15 +84,64 @@ fun MainScreen() {
         canGoForward = webView?.canGoForward() ?: false
     }
 
+
     fun prepareAndLoadUrl(input: String) {
         keyboardController?.hide()
         val trimmedInput = input.trim()
+        if (trimmedInput.isBlank()) {
+            showEmptyUrlDialog = true
+            return
+        }
+
         val finalUrl = when {
             trimmedInput.startsWith("http://") || trimmedInput.startsWith("https://") -> trimmedInput
             trimmedInput.contains(".") && !trimmedInput.contains(" ") -> "https://$trimmedInput"
             else -> "https://www.google.com/search?q=${URLEncoder.encode(trimmedInput, StandardCharsets.UTF_8.toString())}"
         }
+
         urlToLoad = finalUrl
+        searchText = finalUrl
+    }
+
+    // --- Dialog z popularnymi stronami ---
+    if (showPopularSitesDialog) {
+        Dialog(onDismissRequest = { showPopularSitesDialog = false }) { // Zamyka się po kliknięciu poza
+            Card(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp),
+                shape = RoundedCornerShape(16.dp),
+            ) {
+                Column(
+                    modifier = Modifier.padding(16.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Text("Popularne Strony", style = MaterialTheme.typography.titleLarge)
+                    Spacer(modifier = Modifier.height(16.dp))
+
+                    // Lista przycisków dla każdej strony
+                    popularSitesList.forEach { site ->
+                        TextButton(
+                            onClick = {
+                                // Ustaw URL i zamknij dialog
+                                prepareAndLoadUrl(site.url) // Użyj funkcji, by zaktualizować searchText i urlToLoad
+                                showPopularSitesDialog = false
+                            },
+                            modifier = Modifier.fillMaxWidth()
+                        ) {
+                            Text(site.name)
+                        }
+                        Spacer(modifier = Modifier.height(4.dp)) // Mały odstęp
+                    }
+
+                    Spacer(modifier = Modifier.height(16.dp))
+                    // Przycisk do zamknięcia dialogu
+                    Button(onClick = { showPopularSitesDialog = false }) {
+                        Text("Zamknij")
+                    }
+                }
+            }
+        }
     }
 
     Zad5Theme {
@@ -106,50 +166,93 @@ fun MainScreen() {
                     //enter = slideInVertically(initialOffsetY = { -it }), // Wsuń z góry
                     //exit = slideOutVertically(targetOffsetY = { -it })  // Wysuń do góry
                 ) {
-
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(8.dp),
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 16.dp, vertical = 8.dp)
-                    ) {
-                        BasicTextField(
-                            value = searchText,
-                            onValueChange = { searchText = it },
+                    Column {
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(8.dp),
                             modifier = Modifier
-                                .weight(1f)
-                                .border(1.dp, MaterialTheme.colorScheme.outline, RoundedCornerShape(8.dp))
-                                .padding(horizontal = 12.dp, vertical = 10.dp),
-                            textStyle = TextStyle(
-                                color = MaterialTheme.colorScheme.onSurface,
-                                fontSize = 16.sp,
-                            ),
-                            decorationBox = { innerTextField ->
-                                Box(contentAlignment = Alignment.CenterStart) {
-                                    if (searchText.isEmpty()) {
-                                        Text("Wpisz URL lub wyszukaj...", color = Color.Gray, fontSize = 16.sp)
-                                    }
-                                    innerTextField()
-                                }
-                            },
-                            singleLine = true,
-                            keyboardActions = KeyboardActions(
-                                onSearch = {
-                                    prepareAndLoadUrl(searchText)
-                                }
-                            ),
-                            keyboardOptions = KeyboardOptions.Default.copy(
-                                imeAction = ImeAction.Search
-                            )
-                        )
-
-                        Button(
-                            contentPadding = PaddingValues(horizontal = 16.dp),
-                            modifier = Modifier.height(IntrinsicSize.Min),
-                            onClick = { prepareAndLoadUrl(searchText) }
+                                .fillMaxWidth()
+                                .padding(horizontal = 16.dp, vertical = 8.dp)
                         ) {
-                            Text("Załaduj", fontSize = 14.sp)
+                            BasicTextField(
+                                value = searchText,
+                                onValueChange = { searchText = it },
+                                modifier = Modifier
+                                    .weight(1f)
+                                    .border(
+                                        1.dp,
+                                        MaterialTheme.colorScheme.outline,
+                                        RoundedCornerShape(8.dp)
+                                    )
+                                    .padding(horizontal = 12.dp, vertical = 10.dp),
+                                textStyle = TextStyle(
+                                    color = MaterialTheme.colorScheme.onSurface,
+                                    fontSize = 16.sp,
+                                ),
+                                decorationBox = { innerTextField ->
+                                    Row(
+                                        verticalAlignment = Alignment.CenterVertically,
+                                        modifier = Modifier.fillMaxWidth()
+                                    ) {
+                                        Box(
+                                            modifier = Modifier.weight(1f),
+                                            contentAlignment = Alignment.CenterStart
+                                        ) {
+                                            if (searchText.isEmpty()) {
+                                                Text(
+                                                    "Wpisz URL lub wyszukaj...",
+                                                    color = Color.Gray,
+                                                    fontSize = 16.sp
+                                                )
+                                            }
+                                            innerTextField()
+                                        }
+
+                                        if (searchText.isNotEmpty()) {
+                                            IconButton(onClick = { searchText = "" }) {
+                                                Icon(
+                                                    imageVector = Icons.Default.Close,
+                                                    contentDescription = "Wyczyść",
+                                                    tint = Color.Gray
+                                                )
+                                            }
+                                        }
+                                    }
+                                },
+                                singleLine = true,
+                                keyboardActions = KeyboardActions(
+                                    onSearch = {
+                                        prepareAndLoadUrl(searchText)
+                                    }
+                                ),
+                                keyboardOptions = KeyboardOptions.Default.copy(
+                                    imeAction = ImeAction.Search
+                                )
+                            )
+
+                            Button(
+                                contentPadding = PaddingValues(horizontal = 16.dp),
+                                modifier = Modifier.height(IntrinsicSize.Min),
+                                onClick = { prepareAndLoadUrl(searchText) }
+                            ) {
+                                Text("Załaduj", fontSize = 14.sp)
+                            }
+                        }
+
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(8.dp),
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 16.dp, vertical = 8.dp)
+                        ) {
+                            Button(
+                                contentPadding = PaddingValues(horizontal = 8.dp),
+                                modifier = Modifier.height(IntrinsicSize.Min),
+                                onClick = { showPopularSitesDialog = true }
+                            ) {
+                                Text("★ Popularne ★", fontSize = 14.sp)
+                            }
                         }
                     }
                 }
@@ -242,7 +345,18 @@ fun MainScreen() {
             }
         }
     }
-
+    if (showEmptyUrlDialog) {
+        AlertDialog(
+            onDismissRequest = { showEmptyUrlDialog = false },
+            title = { Text("Błąd") },
+            text = { Text("Brak URL do załadowania.") },
+            confirmButton = {
+                TextButton(onClick = { showEmptyUrlDialog = false }) {
+                    Text("OK")
+                }
+            }
+        )
+    }
     BackHandler(enabled = canGoBack) {
         webViewInstance?.goBack()
     }

@@ -7,7 +7,7 @@ import operator
 codeType = "abcdefghijklmnopqrstuwxyzABCDEFGHIJKLMNOPQRSTUWXYZ"
 
 to_code = "abcdefghijklmnopqrstuwxyzABCDEFGHIJKLMNOPQRSTUWXYZ"
-key = "zielone"
+key = "Kupka"
 coded = ""
 
 f = open("Frankenstein.txt", "r", encoding="UTF-8")
@@ -95,12 +95,7 @@ def find_repeated_sequences(text, seq_len):
     sequences = collections.defaultdict(list)
     for i in range(len(text) - seq_len + 1):
         seq = text[i:i+seq_len]
-        # Sprawdzamy, czy wszystkie znaki sekwencji są w alfabecie,
-        # aby uniknąć fałszywych powtórzeń z np. znakami interpunkcyjnymi.
-        # Można to uprościć, jeśli najpierw oczyścimy tekst.
-        # if all(c in codeType for c in seq): # Opcjonalne, ale może pomóc
         sequences[seq].append(i)
-    # Zwracamy tylko te sekwencje, które wystąpiły więcej niż raz
     return {seq: pos for seq, pos in sequences.items() if len(pos) > 1}
 
 def get_sequence_spacings(sequences):
@@ -114,7 +109,6 @@ def get_sequence_spacings(sequences):
 def get_factors(number):
     """Znajduje wszystkie dzielniki liczby większe od 1."""
     factors = set()
-    # Optymalizacja: sprawdzamy tylko do pierwiastka kwadratowego
     for i in range(2, int(math.sqrt(number)) + 1):
         if number % i == 0:
             factors.add(i)
@@ -126,7 +120,6 @@ def get_factors(number):
 
 def estimate_key_length(ciphertext, min_len=3, max_len=20, min_seq_len=3, max_seq_len=5):
     """Estymuje długość klucza metodą Kasiskiego."""
-    # Usuwamy znaki spoza alfabetu, żeby nie zaburzały analizy odległości
     filtered_ciphertext = "".join(c for c in ciphertext if c in codeType)
     if not filtered_ciphertext:
         print("Brak znaków z alfabetu w szyfrogramie do analizy.")
@@ -140,10 +133,8 @@ def estimate_key_length(ciphertext, min_len=3, max_len=20, min_seq_len=3, max_se
 
     if not all_spacings:
         print("Nie znaleziono powtarzających się sekwencji. Metoda Kasiskiego może zawieść.")
-        # Można spróbować metody Indeksu Koincydencji jako alternatywy
         return None # Lub zwrócić domyślną/próbować IC
 
-    # Liczymy częstość występowania potencjalnych długości klucza (dzielników odległości)
     possible_key_lengths = collections.Counter()
     for space in all_spacings:
         factors = get_factors(space)
@@ -231,38 +222,36 @@ MAX_KEY_LEN = 15
 estimated_len = estimate_key_length(coded, min_len=MIN_KEY_LEN, max_len=MAX_KEY_LEN)
 
 if estimated_len:
-        print(f"Przypuszczalna długość klucza: {estimated_len}")
+    print(f"Przypuszczalna długość klucza: ", estimated_len)
 
-        # Krok 2: Odnalezienie klucza
-        recovered_key = find_key(coded, estimated_len, codeType)
+    # Krok 2: Odnalezienie klucza
+    recovered_key = find_key(coded, estimated_len, codeType)
 
-        if recovered_key:
-            print(f"Odzyskany klucz: {recovered_key}")
+    if recovered_key:
+        print(f"Odzyskany klucz: ",recovered_key)
 
-            # Sprawdzenie, czy odzyskany klucz pasuje (opcjonalne)
-            if recovered_key.lower() == key.lower(): # Porównujemy bez względu na wielkość liter
-                print(" sukces! Odzyskany klucz jest zgodny z oryginalnym.")
-            else:
-                print("Ostrzeżenie: Odzyskany klucz różni się od oryginalnego. Analiza mogła być niedokładna.")
-                print(f" Oryginalny: {key}")
-
-            # Krok 3: Deszyfrowanie za pomocą odzyskanego klucza
-            try:
-                decoded_text = VigenereCode(coded, recovered_key, False)
-                print("-" * 20)
-                print(f"Tekst odszyfrowany (fragment): {decoded_text[:200]}...")
-
-                # Proste sprawdzenie poprawności deszyfrowania
-                if decoded_text[:100] == to_code[:100]:
-                     print("Wygląda na to, że tekst został poprawnie odszyfrowany.")
-                else:
-                     print("Odszyfrowany tekst różni się od oryginału. Sprawdź odzyskany klucz i logikę.")
-
-            except ValueError as e:
-                 print(f"Błąd podczas deszyfrowania odzyskanym kluczem: {e}")
-
+        # Sprawdzenie, czy odzyskany klucz pasuje (opcjonalne)
+        if recovered_key.lower() == key.lower(): # Porównujemy bez względu na wielkość liter
+            print("Klucz jest zgodny z oryginalnym.")
         else:
-            print("Nie udało się odzyskać klucza na podstawie oszacowanej długości.")
+            print("Klucz się różni od oryginału")
+
+        # Dekodowanie
+        try:
+            decoded_text = VigenereCode(coded, recovered_key, False)
+            print("ODsZYFROWANY FRAGMENT: ", decoded_text[:200])
+
+            # Proste sprawdzenie poprawności deszyfrowania
+            if decoded_text[:100] == to_code[:100]:
+                print("OKEJ")
+            else:
+                print("NIE JEST OKEJ")
+
+        except ValueError as e:
+                print("BŁĄD: ", e)
+
+    else:
+        print("Nie udało się odzyskać klucza na podstawie oszacowanej długości.")
 else:
     print("Nie udało się oszacować długości klucza. Atak nie powiódł się.")
 

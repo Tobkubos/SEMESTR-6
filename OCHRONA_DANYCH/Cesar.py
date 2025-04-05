@@ -4,7 +4,7 @@ import numpy as np
 
 codeType = ["abcdefghijklmnopqrstuwxyz0123456789",
             "0123456789abcdefghijklmnopqrstuwxyz",
-            "abcdefghijklmnopqrstuqwxyzABCDEFGHIJKLMNOPQRSTUWXYZ"]
+            "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"]
 to_code = "ASDASD"
 
 
@@ -43,9 +43,6 @@ def Cesar(alphabet_idx, to_code, move, isDecoding):
     #print(output)
     return output
 
-
-coded = Cesar(0, to_code, 3, True)
-
 def pokazPlot(licznik): 
     
     litery = list(licznik.keys())  # Unikalne litery
@@ -61,7 +58,6 @@ def pokazPlot(licznik):
 
     plt.show()    
 #------------------------------------------------------
-
 def sprawdzCzestotliwosc(tekst):    
     tekstDoLiczenia = tekst.lower()
     licznik = collections.Counter(char for char in tekstDoLiczenia if char.isalpha())
@@ -76,13 +72,26 @@ def sprawdzCzestotliwosc(tekst):
     return (sum(czestotliwosci_sum_kwadr.values()))
 #------------------------------------------------------
 
-#for i in range (len(codeType)):
-for j in range(len(codeType[1])):
-    decoded = Cesar(0, coded, j, False)
-    r = sprawdzCzestotliwosc(decoded)
-    print(r, " --> ", j)
-#decoded = Cesar(1, coded, 3, False)
-#print(decoded)
+def Deszyfruj(alphabet_idx, tekst):
+    alphabet = codeType[alphabet_idx]
+    tekstDoLiczenia = tekst
+    licznik = collections.Counter(char for char in tekstDoLiczenia if char.isalpha())
+    pop = licznik.most_common(1)[0][0]
+    print(licznik)
+    print(pop)
+    move = alphabet.find(pop) - alphabet.find("e")
+    print(move)
+    decoded = Cesar(alphabet_idx, coded, move, False)
+    words = decoded.split()
+    print(" ".join(words[:50]))
 
 
-    
+#print(sprawdzCzestotliwosc(to_code))
+#print(sprawdzCzestotliwosc(coded)) 
+# Wydrukuj pierwsze 50 słów
+words = to_code.split()
+print(" ".join(words[:50]))
+
+aplh = 2
+coded = Cesar(aplh, to_code, 3, True)
+Deszyfruj(aplh ,coded)
