@@ -4,11 +4,25 @@
     <xs:element name="imie"/>
     <xs:element name="nazwisko"/>
 
+<xs:complexType name="MiejscowoscKodPocztowy">
+    <xs:simpleContent>
+        <xs:extension base=""
+    </xs:simpleContent>
+</xs:complexType>
+
     <xs:simpleType name="Nazwa">
         <xs:restriction base="xs:string">
             <xs:maxLength value="30"/>
         </xs:restriction>
     </xs:simpleType>
+
+    <xs:simpleType name="KodPocztowy">
+        <xs:restriction base="xs:string">
+            <xs:pattern value="\d{2}-\d{3}"/>
+        </xs:restriction>
+    </xs:simpleType>
+
+    <xs:attribute name="kodPocztowy" type="KodPocztowy"/>
 
     <xs:simpleType name="Plec">
         <xs:restriction base="xs:string">

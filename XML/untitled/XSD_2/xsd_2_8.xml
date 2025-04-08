@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<spis_osob xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:noNamespaceSchemaLocation="XSD_2_8.xsd">
+<osoba plec="mężczyzna" stan_cywilny="kawaler/panna">
+    <nazwisko>asd</nazwisko>
+    <imie>qwe</imie>
+    <pesel>12312312312</pesel>
+    <miejscowosc></miejscowosc>
+</osoba>
+</spis_osob>
