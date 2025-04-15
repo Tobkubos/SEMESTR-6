@@ -1,10 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <spis_osob xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
            xsi:noNamespaceSchemaLocation="XSD_2_8.xsd">
-<osoba plec="mężczyzna" stan_cywilny="kawaler/panna">
-    <nazwisko>asd</nazwisko>
+
+<osoba plec="kobieta" stan_cywilny="wdowiec/wdowa">
+    <nazwisko>qwe</nazwisko>
     <imie>qwe</imie>
-    <pesel>12312312312</pesel>
-    <miejscowosc></miejscowosc>
+    <pesel>12345678911</pesel>
+    <miejscowosc kodPocztowy="65-670"></miejscowosc>
+    <dokument>
+        <dowód numer_dokumentu="1231313" kraj="PL">aaaaaaaaaa</dowód>
+    </dokument>
 </osoba>
 </spis_osob>

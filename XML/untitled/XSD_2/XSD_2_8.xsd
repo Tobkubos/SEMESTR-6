@@ -4,11 +4,25 @@
     <xs:element name="imie"/>
     <xs:element name="nazwisko"/>
 
-<xs:complexType name="MiejscowoscKodPocztowy">
-    <xs:simpleContent>
-        <xs:extension base=""
-    </xs:simpleContent>
-</xs:complexType>
+    <xs:complexType name="dokument">
+        <xs:choice>
+            <xs:element name="paszport" type="InformacjeDodatkowe"/>
+            <xs:element name="dowód" type="InformacjeDodatkowe"/>
+        </xs:choice>
+    </xs:complexType>
+    
+    <xs:complexType name="InformacjeDodatkowe">
+        <xs:attribute name="numer_dokumentu" use="required"/>
+        <xs:attribute name="kraj" use="required"/>
+    </xs:complexType>
+    
+    <xs:complexType name="MiejscowoscKodPocztowy">
+        <xs:simpleContent>
+            <xs:extension base="Nazwa">
+                <xs:attribute ref="kodPocztowy" use="required"/>
+            </xs:extension>
+        </xs:simpleContent>
+    </xs:complexType>
 
     <xs:simpleType name="Nazwa">
         <xs:restriction base="xs:string">
@@ -44,7 +58,8 @@
                         </xs:restriction>
                     </xs:simpleType>
                 </xs:element>
-                <xs:element name="miejscowosc" type="Nazwa"/>
+                <xs:element name="miejscowosc" type="MiejscowoscKodPocztowy"/>
+                <xs:element name="dokument" type="dokument"/>
             </xs:sequence>
             <xs:attribute name="plec" type="Plec" use="required"/>
             <xs:attribute name="stan_cywilny" use="required">

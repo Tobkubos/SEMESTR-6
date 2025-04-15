@@ -18,7 +18,6 @@ def sitoErastotenesa(n):
     print("liczby pierwsze", vect)
     print("długość", len(vect))
     print("suma liczb",sum(vect))
-
     # above70k = []
     # for i in vect:
     #     if i>70000:
