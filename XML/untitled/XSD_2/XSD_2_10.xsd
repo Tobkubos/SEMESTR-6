@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+    <xs:element name="uczelnia">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="listaStudentow">
+                    <xs:complexType>
+                        <xs:sequence>
+                            <xs:element name="student" maxOccurs="unbounded" minOccurs="2">
+                                <xs:complexType>
+                                    <xs:sequence>
+                                        <xs:element name="imie" type="xs:string"/>
+                                        <xs:element name="nazwisko" type="xs:string"/>
+                                        <xs:element name="nrIndeksu" type="xs:integer"/>
+                                        <xs:element name="wydzialStudenta" type="xs:string"/>
+                                    </xs:sequence>
+                                    <xs:attribute name="grupa" use="required" type="xs:string"/>
+                                    <xs:attribute name="pozycjaNaLiscie" type="xs:integer"/>
+                                </xs:complexType>
+                            </xs:element>
+                        </xs:sequence>
+                    </xs:complexType>
+                </xs:element>
+
+                <xs:element name="wydzial" minOccurs="2" maxOccurs="unbounded">
+                <xs:complexType>
+                    <xs:sequence>
+                        <xs:element name="nazwa" type="xs:string"/>
+                    </xs:sequence>
+                    <xs:attribute name="numerWydzialu" use="required" type="xs:string"/>
+                </xs:complexType>
+                </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+
+        <xs:key name="kluczStudenta">
+            <xs:selector xpath="listaStudentow/student"/>
+            <xs:field xpath="nrIndeksu"/>
+        </xs:key>
+
+        <xs:unique name="unikalnyStudent">
+            <xs:selector xpath="listaStudentow/student"/>
+            <xs:field xpath="@grupa"/>
+            <xs:field xpath="@pozycjaNaLiscie"/>
+        </xs:unique>
+
+        <xs:key name="kluczWydzialu">
+            <xs:selector xpath="wydzial"/>
+            <xs:field xpath="@numerWydzialu"/>
+        </xs:key>
+
+        <xs:keyref name="studentDoWydzialu" refer="kluczWydzialu">
+            <xs:selector xpath="listaStudentow/student"/>
+            <xs:field xpath="wydzialStudenta"/>
+        </xs:keyref>
+    </xs:element>
+</xs:schema>

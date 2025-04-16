@@ -61,7 +61,6 @@ val popularSitesList = listOf(
     PopularSite("Facebook", "https://facebook.com"),
     PopularSite("WFiIS UŁ", "https://www.wfis.uni.lodz.pl/"),
     PopularSite("nie klikać", "https://www.youtube.com/watch?v=dQw4w9WgXcQ")
-    // Możesz dodać więcej stron
 )
 
 @SuppressLint("SetJavaScriptEnabled")
@@ -103,7 +102,6 @@ fun MainScreen() {
         searchText = finalUrl
     }
 
-    // --- Dialog z popularnymi stronami ---
     if (showPopularSitesDialog) {
         Dialog(onDismissRequest = { showPopularSitesDialog = false }) { // Zamyka się po kliknięciu poza
             Card(
@@ -123,15 +121,14 @@ fun MainScreen() {
                     popularSitesList.forEach { site ->
                         TextButton(
                             onClick = {
-                                // Ustaw URL i zamknij dialog
-                                prepareAndLoadUrl(site.url) // Użyj funkcji, by zaktualizować searchText i urlToLoad
+                                prepareAndLoadUrl(site.url)
                                 showPopularSitesDialog = false
                             },
                             modifier = Modifier.fillMaxWidth()
                         ) {
                             Text(site.name)
                         }
-                        Spacer(modifier = Modifier.height(4.dp)) // Mały odstęp
+                        Spacer(modifier = Modifier.height(4.dp))
                     }
 
                     Spacer(modifier = Modifier.height(16.dp))

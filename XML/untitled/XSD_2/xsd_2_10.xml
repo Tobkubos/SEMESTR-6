@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<uczelnia xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:noNamespaceSchemaLocation="XSD_2_10.xsd">
+
+    <listaStudentow>
+        <student grupa="A" pozycjaNaLiscie="1">
+            <imie>Anna</imie>
+            <nazwisko>Kowalska</nazwisko>
+            <nrIndeksu>12345</nrIndeksu>
+            <wydzialStudenta>W1</wydzialStudenta>
+        </student>
+        <student grupa="A" pozycjaNaLiscie="2">
+            <imie>Piotr</imie>
+            <nazwisko>Nowak</nazwisko>
+            <nrIndeksu>12346</nrIndeksu>
+            <wydzialStudenta>W2</wydzialStudenta>
+        </student>
+        <student grupa="B" pozycjaNaLiscie="1">
+            <imie>Maria</imie>
+            <nazwisko>Wiśniewska</nazwisko>
+            <nrIndeksu>12347</nrIndeksu>
+            <wydzialStudenta>W1</wydzialStudenta>
+        </student>
+    </listaStudentow>
+
+    <wydzial numerWydzialu="W1">
+        <nazwa>Informatyka</nazwa>
+    </wydzial>
+    <wydzial numerWydzialu="W2">
+        <nazwa>Matematyka</nazwa>
+    </wydzial>
+
+</uczelnia>

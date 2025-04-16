@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="application/xml" href="/arkusz.xsl"?>
+<spis jedn_m="Masy Jowisza" jedn_odl="Lata świetlne">
+    <planeta nazwa="alfa b">
+        <typ_widmowy>K2III</typ_widmowy>
+        <gwiazda>Arietis</gwiazda>
+        <masa>1.8</masa>
+        <odleglosc>66</odleglosc>
+        <rok_odkrycia>2011</rok_odkrycia>
+    </planeta>
+    <planeta nazwa="epsilon b">
+        <typ_widmowy>K2</typ_widmowy>
+        <gwiazda>Ran</gwiazda>
+        <masa>3.09</masa>
+        <odleglosc>10.49</odleglosc>
+        <rok_odkrycia>2000</rok_odkrycia>
+    </planeta>
+    <planeta nazwa="Saffar">
+        <typ_widmowy>F8V</typ_widmowy>
+        <gwiazda>Titawin</gwiazda>
+        <masa>0.69</masa>
+        <odleglosc>43.9</odleglosc>
+        <rok_odkrycia>1996</rok_odkrycia>
+    </planeta>
+    <planeta nazwa="Poltergeist">
+        <typ_widmowy>pulsar</typ_widmowy>
+        <gwiazda>Lich</gwiazda>
+        <masa>0.013</masa>
+        <odleglosc>980</odleglosc>
+        <rok_odkrycia>1992</rok_odkrycia>
+    </planeta>
+    <planeta nazwa="2M1207b">
+        <typ_widmowy>M8</typ_widmowy>
+        <gwiazda>2M1207</gwiazda>
+        <masa>4</masa>
+        <odleglosc>173</odleglosc>
+        <rok_odkrycia>2004</rok_odkrycia>
+    </planeta>
+</spis>

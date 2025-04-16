@@ -8,7 +8,7 @@
     <pesel>12345678911</pesel>
     <miejscowosc kodPocztowy="65-670"></miejscowosc>
     <dokument>
-        <dowód numer_dokumentu="1231313" kraj="PL">aaaaaaaaaa</dowód>
+        <dowód numer_dokumentu="1231313" kraj="PL"></dowód>
     </dokument>
 </osoba>
 </spis_osob>
