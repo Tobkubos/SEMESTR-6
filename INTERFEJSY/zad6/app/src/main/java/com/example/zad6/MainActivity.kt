@@ -59,7 +59,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.window.Dialog
-import com.example.zad6.ui.theme.Zad6Theme
+import com.example.compose.Zad6Theme
 import com.google.maps.android.compose.GoogleMap
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
